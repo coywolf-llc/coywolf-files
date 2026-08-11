@@ -338,7 +338,7 @@ final class Coywolf_Files_GitHub_Updater {
 		$info->download_link = $this->pick_package_url( $release );
 		$info->last_updated  = isset( $release['published_at'] ) ? $release['published_at'] : '';
 		$info->sections      = array(
-			'description' => 'Upload any-sized file to Cloudflare R2 or Amazon S3 and embed it with a Files block.',
+			'description' => 'Upload any-sized file to Cloudflare R2 or Amazon S3 and embed it with a Coywolf File block.',
 			'changelog'   => $this->render_changelog( $body ),
 		);
 		$info->icons         = $this->icon_urls();

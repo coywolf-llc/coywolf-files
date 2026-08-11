@@ -302,7 +302,7 @@ class Coywolf_Files_List_Table extends WP_List_Table {
 	 */
 	public function no_items() {
 		if ( 'in_use' === $this->current_filter() ) {
-			esc_html_e( 'No files are on any posts or pages yet. Add the Files block to a post, or switch the filter to “All uploaded files”.', 'coywolf-files' );
+			esc_html_e( 'No files are on any posts or pages yet. Add the Coywolf File block to a post, or switch the filter to “All uploaded files”.', 'coywolf-files' );
 			return;
 		}
 		esc_html_e( 'No files found.', 'coywolf-files' );

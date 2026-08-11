@@ -1,6 +1,6 @@
 # Coywolf Files
 
-**Version:** 1.0.6
+**Version:** 1.0.7
 **Requires at least:** WordPress 6.3
 **Requires PHP:** 7.4
 **License:** GPL-2.0-or-later
@@ -31,7 +31,7 @@ Features:
 2. Activate it.
 3. Go to **Files → Settings** and connect your Cloudflare R2 or Amazon S3 bucket (access key, secret key, bucket, and region or Cloudflare account ID), then click **Test connection**.
 4. Add a CORS rule to your bucket so the browser can upload to it — the exact policy is on the **Files → Documentation** screen.
-5. Add the **Files** block to a post or page and upload or select a file.
+5. Add the **Coywolf File** block to a post or page and upload or select a file.
 
 ## Frequently Asked Questions
 
@@ -71,6 +71,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 - **Cloudflare R2** — [Terms](https://www.cloudflare.com/website-terms/) · [Privacy Policy](https://www.cloudflare.com/privacypolicy/)
 
 ## Changelog
+
+### 1.0.7
+- Code quality: inline the option and settings-group names at their call sites (WordPress.org prefix-visibility best practice). No functional or data change.
 
 ### 1.0.6
 - Rename the block to "Coywolf File" to avoid confusion with WordPress's built-in File block.
