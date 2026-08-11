@@ -144,8 +144,10 @@ class Coywolf_Files_Admin {
 		}
 		wp_enqueue_style( 'coywolf-files-admin', COYWOLF_FILES_URL . 'css/admin.css', array(), Coywolf_Files::VERSION );
 
-		// Settings screen: the Check CORS button (a real browser test upload).
+		// Settings screen: the Check CORS button + the live appearance preview.
 		if ( isset( $this->hooks['settings'] ) && $hook === $this->hooks['settings'] ) {
+			// The preview card reuses the front-end card styles.
+			wp_enqueue_style( 'coywolf-files-view' );
 			wp_enqueue_script( 'coywolf-files-settings', COYWOLF_FILES_URL . 'js/settings.js', array( 'wp-api-fetch', 'wp-i18n' ), Coywolf_Files::VERSION, true );
 			wp_set_script_translations( 'coywolf-files-settings', 'coywolf-files' );
 			wp_add_inline_script(

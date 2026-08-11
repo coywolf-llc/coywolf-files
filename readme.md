@@ -1,6 +1,6 @@
 # Coywolf Files
 
-**Version:** 1.0.3
+**Version:** 1.0.4
 **Requires at least:** WordPress 6.3
 **Requires PHP:** 7.4
 **License:** GPL-2.0-or-later
