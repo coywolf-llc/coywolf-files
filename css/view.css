@@ -1,0 +1,187 @@
+/* Coywolf Files — front-end styles.
+ *
+ * A download card styled after Recollect's file attachment: a parametric
+ * file-type badge, name, meta line, and Download / Copy-link controls. The look
+ * is driven by CSS custom properties so a theme can override it (no !important),
+ * with light and dark token sets selected by the scheme class / system setting.
+ */
+
+.coywolf-files {
+	--cwf-card-bg: #ffffff;
+	--cwf-card-border: #e6e6e6;
+	--cwf-name: #1e2a3b;
+	--cwf-secondary: #5b6472;
+	--cwf-action: #5b6472;
+	--cwf-action-hover-bg: rgba( 0, 0, 0, 0.06 );
+	--cwf-accent: #007392;
+	--cwf-radius: 12px;
+
+	--cwf-icon-page: #ffffff;
+	--cwf-icon-stroke: #d0d5dd;
+	--cwf-icon-fold: #eaecf0;
+
+	margin: 0 0 1.25em;
+}
+
+/* Dark token set, shared by the explicit dark scheme and auto-in-dark. */
+.coywolf-files.coywolf-files-scheme-dark {
+	--cwf-card-bg: #1b1b1c;
+	--cwf-card-border: #343437;
+	--cwf-name: #d5d8dc;
+	--cwf-secondary: #9ea3a8;
+	--cwf-action: #9ea3a8;
+	--cwf-action-hover-bg: rgba( 255, 255, 255, 0.08 );
+	/* Lighter accent so the download icon + focus ring clear 3:1 on the dark card. */
+	--cwf-accent: #21a1c4;
+	--cwf-icon-page: #e7eaee;
+	--cwf-icon-stroke: #aab1ba;
+	--cwf-icon-fold: #d0d5dd;
+}
+
+@media ( prefers-color-scheme: dark ) {
+	.coywolf-files.coywolf-files-scheme-auto {
+		--cwf-card-bg: #1b1b1c;
+		--cwf-card-border: #343437;
+		--cwf-name: #d5d8dc;
+		--cwf-secondary: #9ea3a8;
+		--cwf-action: #9ea3a8;
+		--cwf-action-hover-bg: rgba( 255, 255, 255, 0.08 );
+		--cwf-accent: #21a1c4;
+		--cwf-icon-page: #e7eaee;
+		--cwf-icon-stroke: #aab1ba;
+		--cwf-icon-fold: #d0d5dd;
+	}
+}
+
+.coywolf-files .coywolf-files-card {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 12px 14px;
+	border: 1px solid var( --cwf-card-border );
+	border-radius: var( --cwf-radius );
+	background: var( --cwf-card-bg );
+}
+
+.coywolf-files .coywolf-files-icon {
+	flex-shrink: 0;
+	line-height: 0;
+}
+
+.coywolf-files .coywolf-files-icon-svg {
+	display: block;
+	width: 40px;
+	height: 48px;
+}
+
+.coywolf-files .coywolf-files-body {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.coywolf-files .coywolf-files-name {
+	font-weight: 500;
+	color: var( --cwf-name );
+	line-height: 1.35;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.coywolf-files .coywolf-files-desc,
+.coywolf-files .coywolf-files-meta {
+	font-size: 0.875em;
+	color: var( --cwf-secondary );
+	line-height: 1.4;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.coywolf-files .coywolf-files-desc {
+	margin-top: 2px;
+	white-space: normal;
+}
+
+.coywolf-files .coywolf-files-meta {
+	margin-top: 2px;
+	font-variant-numeric: tabular-nums;
+}
+
+.coywolf-files .coywolf-files-actions {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+/* Icon action buttons (reset theme <a>/<button> styling, then a round hit area). */
+.coywolf-files .coywolf-files-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: var( --cwf-action );
+	cursor: pointer;
+	text-decoration: none;
+	box-shadow: none;
+	-webkit-appearance: none;
+	appearance: none;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.coywolf-files .coywolf-files-btn:hover {
+	background: var( --cwf-action-hover-bg );
+	color: var( --cwf-name );
+}
+
+.coywolf-files .coywolf-files-download {
+	color: var( --cwf-accent );
+}
+
+.coywolf-files .coywolf-files-btn:focus-visible {
+	outline: 2px solid var( --cwf-accent );
+	outline-offset: 2px;
+}
+
+.coywolf-files .coywolf-files-copy.is-copied {
+	color: var( --cwf-accent );
+}
+
+.coywolf-files .coywolf-files-ic {
+	display: block;
+	width: 18px;
+	height: 18px;
+}
+
+/* Copy button: show the link icon by default, the check icon once copied, so
+   success is conveyed by shape, not color alone. */
+.coywolf-files .coywolf-files-copy .coywolf-files-ic-check {
+	display: none;
+}
+
+.coywolf-files .coywolf-files-copy.is-copied .coywolf-files-ic-link {
+	display: none;
+}
+
+.coywolf-files .coywolf-files-copy.is-copied .coywolf-files-ic-check {
+	display: block;
+}
+
+.coywolf-files .screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect( 0, 0, 0, 0 );
+	border: 0;
+	word-wrap: normal;
+}

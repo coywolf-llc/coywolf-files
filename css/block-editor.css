@@ -1,0 +1,124 @@
+/* Coywolf Files — block editor styles. */
+
+.coywolf-files-placeholder-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+
+/* Upload modal. */
+.coywolf-files-uploader-modal .components-modal__content {
+	min-width: min( 90vw, 480px );
+}
+
+.coywolf-files-upload-field {
+	margin-bottom: 16px;
+}
+
+.coywolf-files-upload-field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+.coywolf-files-upload-field input[type="file"] {
+	display: block;
+	width: 100%;
+}
+
+.coywolf-files-upload-actions {
+	display: flex;
+	gap: 8px;
+	margin: 8px 0 4px;
+}
+
+.coywolf-files-upload-progress {
+	height: 8px;
+	margin: 12px 0 4px;
+	overflow: hidden;
+	background: #f0f0f1;
+	border-radius: 4px;
+}
+
+.coywolf-files-upload-bar {
+	width: 0;
+	height: 100%;
+	background: #2271b1;
+	transition: width 0.2s ease;
+}
+
+.coywolf-files-upload-status {
+	margin-top: 8px;
+	font-size: 13px;
+}
+
+/* Library picker. */
+.coywolf-files-picker .components-modal__content {
+	min-width: min( 92vw, 640px );
+}
+
+.coywolf-files-picker-search {
+	margin-bottom: 12px;
+}
+
+.coywolf-files-picker-grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fill, minmax( 180px, 1fr ) );
+	gap: 8px;
+	max-height: 60vh;
+	overflow: auto;
+}
+
+.coywolf-files-picker-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	background: #fff;
+	cursor: pointer;
+	text-align: left;
+	width: 100%;
+}
+
+.coywolf-files-picker-item:hover {
+	border-color: #2271b1;
+}
+
+.coywolf-files-picker-item:focus-visible {
+	border-color: #2271b1;
+	outline: 2px solid #2271b1;
+	outline-offset: 1px;
+}
+
+.coywolf-files-picker-icon {
+	--cwf-icon-page: #ffffff;
+	--cwf-icon-stroke: #d0d5dd;
+	--cwf-icon-fold: #eaecf0;
+	flex-shrink: 0;
+	line-height: 0;
+}
+
+.coywolf-files-picker-icon .coywolf-files-icon-svg {
+	width: 28px;
+	height: 34px;
+	display: block;
+}
+
+.coywolf-files-picker-name {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: 500;
+}
+
+.coywolf-files-picker-size {
+	flex-shrink: 0;
+	color: #646970;
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
