@@ -3,7 +3,7 @@ Contributors: jonhenshaw
 Tags: file, download, amazon s3, backblaze b2, cloudflare r2
 Requires at least: 6.3
 Tested up to: 7.0
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -83,6 +83,12 @@ The provider is the one you choose; consult its terms and privacy policy:
 5. A published download card with the file-type badge, meta line, and Download / Copy-link buttons, in light and dark themes.
 
 == Changelog ==
+
+= 1.0.5 =
+* Settings: constrain the appearance preview to a card-like width so it no longer spans the full row.
+
+= 1.0.4 =
+* Settings: add a live appearance preview — a sample download card that updates as you change the color scheme, accent color, and display toggles.
 
 = 1.0.3 =
 * Settings: hide the access key, secret key, bucket, storage location, advanced, and connection fields until a provider is selected, so the form reveals itself step by step.
