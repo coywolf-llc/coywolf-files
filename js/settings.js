@@ -18,7 +18,7 @@
 	}
 
 	// Show only the location field relevant to the chosen provider: Region for
-	// Backblaze B2 / Amazon S3, Cloudflare account ID for R2.
+	// Amazon S3, Cloudflare account ID for R2.
 	function initProviderToggle() {
 		var select = document.getElementById( 'coywolf-files-provider' );
 		if ( ! select ) {
@@ -40,7 +40,7 @@
 			}
 			// Within the (now visible) location row, show only the relevant field.
 			if ( region ) {
-				region.style.display = ( 'b2' === v || 's3' === v ) ? '' : 'none';
+				region.style.display = ( 's3' === v ) ? '' : 'none';
 			}
 			if ( account ) {
 				account.style.display = ( 'r2' === v ) ? '' : 'none';

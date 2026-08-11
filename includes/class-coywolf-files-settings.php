@@ -190,13 +190,13 @@ class Coywolf_Files_Settings {
 	}
 
 	/**
-	 * The active provider (b2 | r2 | s3), or ''.
+	 * The active provider (r2 | s3), or ''.
 	 *
 	 * @return string
 	 */
 	public function provider() {
 		$conn = $this->connection();
-		return in_array( $conn['provider'], array( 'b2', 'r2', 's3' ), true ) ? $conn['provider'] : '';
+		return in_array( $conn['provider'], array( 'r2', 's3' ), true ) ? $conn['provider'] : '';
 	}
 
 	/**
@@ -383,7 +383,7 @@ class Coywolf_Files_Settings {
 		$clean = self::connection_defaults();
 
 		$provider          = isset( $input['provider'] ) ? sanitize_key( $input['provider'] ) : '';
-		$clean['provider'] = in_array( $provider, array( 'b2', 'r2', 's3' ), true ) ? $provider : '';
+		$clean['provider'] = in_array( $provider, array( 'r2', 's3' ), true ) ? $provider : '';
 
 		$clean['account_id']  = isset( $input['account_id'] ) ? preg_replace( '/[^0-9a-fA-F]/', '', (string) $input['account_id'] ) : '';
 		$clean['region']      = isset( $input['region'] ) ? sanitize_text_field( strtolower( trim( (string) $input['region'] ) ) ) : '';
@@ -484,7 +484,6 @@ class Coywolf_Files_Settings {
 		$conn      = $this->connection();
 		$providers = array(
 			''   => __( '— Select a provider —', 'coywolf-files' ),
-			'b2' => __( 'Backblaze B2', 'coywolf-files' ),
 			'r2' => __( 'Cloudflare R2', 'coywolf-files' ),
 			's3' => __( 'Amazon S3', 'coywolf-files' ),
 		);
@@ -493,7 +492,7 @@ class Coywolf_Files_Settings {
 			printf( '<option value="%s"%s>%s</option>', esc_attr( $value ), selected( $conn['provider'], $value, false ), esc_html( $label ) );
 		}
 		echo '</select>';
-		echo '<p class="description">' . esc_html__( 'All three speak the S3 API. Pick the one where your bucket lives.', 'coywolf-files' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Both speak the S3 API. Pick the one where your bucket lives.', 'coywolf-files' ) . '</p>';
 	}
 
 	/**
@@ -538,14 +537,14 @@ class Coywolf_Files_Settings {
 	}
 
 	/**
-	 * Account ID (R2) / Region (B2, S3) fields. Only the field relevant to the
+	 * Account ID (R2) / Region (S3) fields. Only the field relevant to the
 	 * chosen provider is shown — hidden inline here (based on the saved provider,
 	 * to avoid a flash) and toggled by settings.js when the provider changes.
 	 */
 	public function render_location_field() {
 		$conn         = $this->connection();
 		$provider     = $this->provider();
-		$show_region  = in_array( $provider, array( 'b2', 's3' ), true ) ? '' : ' style="display:none;"';
+		$show_region  = ( 's3' === $provider ) ? '' : ' style="display:none;"';
 		$show_account = ( 'r2' === $provider ) ? '' : ' style="display:none;"';
 
 		echo '<div class="coywolf-files-loc-region"' . $show_region . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute.
@@ -554,9 +553,9 @@ class Coywolf_Files_Settings {
 			esc_html__( 'Region', 'coywolf-files' ),
 			esc_attr( self::CONN_OPTION ),
 			esc_attr( (string) $conn['region'] ),
-			esc_attr__( 'e.g. us-east-1 or us-west-004', 'coywolf-files' )
+			esc_attr__( 'e.g. us-east-1', 'coywolf-files' )
 		);
-		echo '<p class="description">' . esc_html__( 'For Amazon S3 (e.g. us-east-1) and Backblaze B2 (e.g. us-west-004).', 'coywolf-files' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'For Amazon S3 (e.g. us-east-1).', 'coywolf-files' ) . '</p>';
 		echo '</div>';
 		echo '<div class="coywolf-files-loc-account"' . $show_account . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute.
 		printf(

@@ -22,7 +22,7 @@ final class Coywolf_Files {
 	 * Plugin version. Kept in sync with the main-file "Version:" header by the
 	 * release workflow (it bumps both).
 	 */
-	const VERSION = '1.0.5';
+	const VERSION = '1.0.6';
 
 	/**
 	 * Capability that gates every admin screen and admin REST route.
@@ -49,7 +49,7 @@ final class Coywolf_Files {
 	private $settings;
 
 	/**
-	 * Object-storage module (B2 / R2 / S3 via one S3-compatible client).
+	 * Object-storage module (R2 / S3 via one S3-compatible client).
 	 *
 	 * @var Coywolf_Files_Storage
 	 */

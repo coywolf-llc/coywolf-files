@@ -54,25 +54,6 @@ class Coywolf_Files_Docs {
 	}
 
 	/**
-	 * The Backblaze B2 native CORS rule (JSON), with the site origin filled in.
-	 *
-	 * @return string
-	 */
-	public static function cors_json_b2() {
-		$origin = self::site_origin();
-		return "[\n"
-			. "  {\n"
-			. "    \"corsRuleName\": \"coywolf-files\",\n"
-			. '    "allowedOrigins": ["' . $origin . "\"],\n"
-			. "    \"allowedOperations\": [\"s3_put\", \"s3_get\", \"s3_head\"],\n"
-			. "    \"allowedHeaders\": [\"*\"],\n"
-			. "    \"exposeHeaders\": [\"etag\"],\n"
-			. "    \"maxAgeSeconds\": 3600\n"
-			. "  }\n"
-			. ']';
-	}
-
-	/**
 	 * Render a preformatted code block.
 	 *
 	 * @param string $code Code.
@@ -104,21 +85,11 @@ class Coywolf_Files_Docs {
 
 		echo '<div class="wrap coywolf-files-docs">';
 		echo '<h1>' . esc_html__( 'Coywolf Files — Documentation', 'coywolf-files' ) . '</h1>';
-		echo '<p>' . esc_html__( 'Coywolf Files stores your files in your own object storage — Backblaze B2, Cloudflare R2, or Amazon S3 — and lets you add them to posts and pages with the Files block. Setup is two one-time steps per bucket: get your keys, and add a CORS rule. Both are covered below for each provider.', 'coywolf-files' ) . '</p>';
+		echo '<p>' . esc_html__( 'Coywolf Files stores your files in your own object storage — Cloudflare R2 or Amazon S3 — and lets you add them to posts and pages with the Coywolf File block. Setup is two one-time steps per bucket: get your keys, and add a CORS rule. Both are covered below for each provider.', 'coywolf-files' ) . '</p>';
 
 		/* ---- 1. Credentials ------------------------------------------------ */
 		echo '<h2>' . esc_html__( '1. Get your storage credentials', 'coywolf-files' ) . '</h2>';
-		echo '<p>' . esc_html__( 'You need an access key ID, a secret access key, a bucket name, and either a region (B2 / S3) or your Cloudflare account ID (R2). Everything is done in your provider’s console — nothing here.', 'coywolf-files' ) . '</p>';
-
-		echo '<h3>' . esc_html__( 'Backblaze B2', 'coywolf-files' ) . '</h3>';
-		self::steps(
-			array(
-				__( 'Sign in at backblaze.com and open B2 Cloud Storage → Buckets. Create a bucket (keep it Private) and note its name.', 'coywolf-files' ),
-				__( 'On the bucket, find its Endpoint, e.g. s3.us-west-004.backblazeb2.com — the middle part (us-west-004) is your Region.', 'coywolf-files' ),
-				__( 'Open App Keys → Add a New Application Key, scope it to that bucket with Read and Write access, and create it.', 'coywolf-files' ),
-				__( 'Copy the keyID (this is your Access key ID) and the applicationKey (your Secret access key) — the secret is shown only once.', 'coywolf-files' ),
-			)
-		);
+		echo '<p>' . esc_html__( 'You need an access key ID, a secret access key, a bucket name, and either your Cloudflare account ID (R2) or a region (Amazon S3). Everything is done in your provider’s console — nothing here.', 'coywolf-files' ) . '</p>';
 
 		echo '<h3>' . esc_html__( 'Cloudflare R2', 'coywolf-files' ) . '</h3>';
 		self::steps(
@@ -171,16 +142,12 @@ class Coywolf_Files_Docs {
 			)
 		);
 
-		echo '<p>' . esc_html__( 'S3 and Cloudflare R2 use this policy (your site’s address is already filled in):', 'coywolf-files' ) . '</p>';
+		echo '<p>' . esc_html__( 'Cloudflare R2 and Amazon S3 use this policy (your site’s address is already filled in):', 'coywolf-files' ) . '</p>';
 		self::code_block( self::cors_json_s3() );
-
-		echo '<h3>' . esc_html__( 'Backblaze B2', 'coywolf-files' ) . '</h3>';
-		echo '<p>' . esc_html__( 'On the bucket, open CORS Rules. The quickest option is the preset “Share everything in this bucket with every origin” — that’s safe here, because the signed upload URL is the real access control, not CORS. For a rule scoped to just this site, use B2’s own format (set via the B2 CLI/API):', 'coywolf-files' ) . '</p>';
-		self::code_block( self::cors_json_b2() );
 
 		/* ---- 4–6. Usage ---------------------------------------------------- */
 		echo '<h2>' . esc_html__( '4. Add a file to a post or page', 'coywolf-files' ) . '</h2>';
-		echo '<p>' . esc_html__( 'In the editor, add the Files block. Upload a new file or browse to one you’ve already uploaded. Then use the block’s settings to rename it and add a description for this placement — like any other block, the name and description are per-block. Visitors see a download card they can download from or copy a link to.', 'coywolf-files' ) . '</p>';
+		echo '<p>' . esc_html__( 'In the editor, add the Coywolf File block. Upload a new file or browse to one you’ve already uploaded. Then use the block’s settings to rename it and add a description for this placement — like any other block, the name and description are per-block. Visitors see a download card they can download from or copy a link to.', 'coywolf-files' ) . '</p>';
 
 		echo '<h2>' . esc_html__( '5. The All Files library', 'coywolf-files' ) . '</h2>';
 		echo '<p>' . esc_html__( 'Files → All Files lists the files currently added to posts and pages, with per-file counts of how many posts and pages use each one (each count links to a filtered list). Deleting a file here removes it from storage and from every post or page that used it. Switch the filter to “All uploaded files” or “Unused” to manage files that aren’t placed anywhere.', 'coywolf-files' ) . '</p>';
