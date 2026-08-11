@@ -1,0 +1,12 @@
+# Coywolf Files (WordPress plugin)
+
+# Build artefacts
+*.zip
+build/
+*.log
+.DS_Store
+node_modules/
+
+# Local testing secrets — never commit
+.env
+.env.*
