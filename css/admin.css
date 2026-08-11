@@ -1,0 +1,82 @@
+/* Coywolf Files — admin styles. */
+
+/* File-type badge in the All Files table. */
+.coywolf-files-list-icon {
+	--cwf-icon-page: #ffffff;
+	--cwf-icon-stroke: #d0d5dd;
+	--cwf-icon-fold: #eaecf0;
+	display: inline-block;
+	line-height: 0;
+}
+
+.coywolf-files-list-icon .coywolf-files-icon-svg {
+	width: 28px;
+	height: 34px;
+	display: block;
+}
+
+.column-icon {
+	width: 48px;
+}
+
+.column-size,
+.column-downloads,
+.column-posts,
+.column-pages {
+	width: 9%;
+}
+
+/* Upload File screen. */
+.coywolf-files-uploader {
+	max-width: 640px;
+}
+
+.coywolf-files-drop {
+	margin: 12px 0;
+	padding: 24px;
+	border: 2px dashed #c3c4c7;
+	border-radius: 8px;
+	background: #fff;
+	text-align: center;
+}
+
+.coywolf-files-drop.is-dragover {
+	border-color: #2271b1;
+	background: #f0f6fc;
+}
+
+.coywolf-files-drop input[type="file"] {
+	display: block;
+	margin: 0 auto 10px;
+}
+
+.coywolf-files-drop p {
+	margin: 0;
+	color: #646970;
+}
+
+.coywolf-files-progress {
+	height: 10px;
+	margin: 12px 0 6px;
+	overflow: hidden;
+	background: #f0f0f1;
+	border-radius: 4px;
+}
+
+.coywolf-files-progress-bar {
+	width: 0;
+	height: 100%;
+	background: #2271b1;
+	transition: width 0.2s ease;
+}
+
+.coywolf-files-upload-status {
+	min-height: 1.4em;
+	font-size: 13px;
+}
+
+/* Documentation page code blocks. */
+.coywolf-files-docs pre.coywolf-files-code {
+	max-width: 640px;
+	overflow: auto;
+}

@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "coywolf/file",
+	"title": "Files",
+	"category": "media",
+	"icon": "media-default",
+	"description": "Upload a file to Backblaze B2, Cloudflare R2, or Amazon S3, or pick one from your library, and show a download card visitors can download or copy a link to.",
+	"keywords": [ "file", "download", "attachment", "upload", "document" ],
+	"textdomain": "coywolf-files",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"anchor": true
+	},
+	"attributes": {
+		"fileId": { "type": "string", "default": "" },
+		"fileName": { "type": "string", "default": "" },
+		"title": { "type": "string", "default": "" },
+		"description": { "type": "string", "default": "" },
+		"mime": { "type": "string", "default": "" },
+		"ext": { "type": "string", "default": "" },
+		"size": { "type": "number", "default": 0 },
+		"uploaded": { "type": "string", "default": "" },
+		"showIcon": { "type": "boolean" },
+		"showDescription": { "type": "boolean" },
+		"showMeta": { "type": "boolean" },
+		"showDownload": { "type": "boolean" },
+		"showCopyLink": { "type": "boolean" },
+		"align": { "type": "string" }
+	},
+	"editorScript": "coywolf-files-block",
+	"editorStyle": "coywolf-files-block-editor",
+	"viewScript": "coywolf-files-view",
+	"style": "coywolf-files-view"
+}
