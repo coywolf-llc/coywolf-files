@@ -588,7 +588,18 @@ class Coywolf_Files_Settings {
 		} else {
 			echo '<p style="color:#b32d2e;font-weight:600;">' . esc_html__( '✗ Connection failed:', 'coywolf-files' ) . ' ' . esc_html( $status ) . '</p>';
 		}
-		echo '<p><a class="button" href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=coywolf_files_test_connection' ), 'coywolf_files_test' ) ) . '">' . esc_html__( 'Test connection', 'coywolf-files' ) . '</a></p>';
+		echo '<p>';
+		echo '<a class="button" href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=coywolf_files_test_connection' ), 'coywolf_files_test' ) ) . '">' . esc_html__( 'Test connection', 'coywolf-files' ) . '</a> ';
+		echo '<button type="button" class="button" id="coywolf-files-cors-check">' . esc_html__( 'Check CORS', 'coywolf-files' ) . '</button>';
+		echo '</p>';
+		echo '<div id="coywolf-files-cors-result" class="coywolf-files-cors-result" role="status" aria-live="polite"></div>';
+		echo '<p class="description">' . wp_kses_post(
+			sprintf(
+				/* translators: %s: Documentation page URL. */
+				__( 'Test connection checks your keys. Check CORS does a real test upload from your browser to confirm the bucket allows direct uploads — see <a href="%s">Documentation</a> for the one-time CORS rule.', 'coywolf-files' ),
+				esc_url( admin_url( 'admin.php?page=coywolf-files-docs' ) )
+			)
+		) . '</p>';
 	}
 
 	/**

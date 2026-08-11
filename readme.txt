@@ -3,7 +3,7 @@ Contributors: jonhenshaw
 Tags: file, download, amazon s3, backblaze b2, cloudflare r2
 Requires at least: 6.3
 Tested up to: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -83,6 +83,10 @@ The provider is the one you choose; consult its terms and privacy policy:
 5. A published download card with the file-type badge, meta line, and Download / Copy-link buttons, in light and dark themes.
 
 == Changelog ==
+
+= 1.0.1 =
+* Add a Check CORS button to Settings that runs a real test upload from the browser and reports exactly what to fix (including a missing ExposeHeaders: ETag).
+* Expand Documentation with per-provider, step-by-step instructions for getting credentials and configuring the bucket CORS rule (Backblaze B2, Cloudflare R2, Amazon S3).
 
 = 1.0.0 =
 * Initial release: the Files block, direct-to-storage uploads for Backblaze B2 / Cloudflare R2 / Amazon S3, the download card with light and dark themes, and the All Files library.

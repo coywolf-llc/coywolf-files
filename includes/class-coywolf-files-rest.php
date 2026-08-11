@@ -126,6 +126,26 @@ class Coywolf_Files_REST {
 				'permission_callback' => $admin,
 			)
 		);
+
+		register_rest_route(
+			self::NS,
+			'/cors-check',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'cors_check' ),
+				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NS,
+			'/cors-check/cleanup',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'cors_check_cleanup' ),
+				'permission_callback' => $admin,
+			)
+		);
 	}
 
 	/**
@@ -347,6 +367,52 @@ class Coywolf_Files_REST {
 			$this->storage->abort_multipart( $pending['key'], $pending['upload_id'] );
 		}
 		$this->clear_pending( $file_id );
+		return rest_ensure_response( array( 'ok' => true ) );
+	}
+
+	/*
+	 * CORS check.
+	 */
+
+	/**
+	 * Mint a presigned PUT for a throwaway object so the browser can test whether
+	 * the bucket's CORS rule permits a direct upload from this site.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function cors_check( $request ) {
+		unset( $request );
+		if ( ! $this->storage->is_configured() ) {
+			return new WP_Error( 'coywolf_files_unconfigured', __( 'Connect a storage bucket first.', 'coywolf-files' ), array( 'status' => 409 ) );
+		}
+		$key = Coywolf_Files_Storage::KEY_PREFIX . '/.cors-check/' . bin2hex( random_bytes( 8 ) ) . '.txt';
+		$url = $this->storage->presign_put( $key );
+		if ( is_wp_error( $url ) ) {
+			return $url;
+		}
+		return rest_ensure_response(
+			array(
+				'url' => $url,
+				'key' => $key,
+			)
+		);
+	}
+
+	/**
+	 * Delete the throwaway CORS-check object (server-side, no browser CORS
+	 * needed). Restricted to keys under the cors-check prefix.
+	 *
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response
+	 */
+	public function cors_check_cleanup( $request ) {
+		$params = $this->params( $request );
+		$key    = isset( $params['key'] ) ? (string) $params['key'] : '';
+		$prefix = Coywolf_Files_Storage::KEY_PREFIX . '/.cors-check/';
+		if ( '' !== $key && 0 === strpos( $key, $prefix ) ) {
+			$this->storage->delete_object( $key );
+		}
 		return rest_ensure_response( array( 'ok' => true ) );
 	}
 
