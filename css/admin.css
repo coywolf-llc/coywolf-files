@@ -80,3 +80,37 @@
 	max-width: 640px;
 	overflow: auto;
 }
+
+/* Check CORS result. */
+.coywolf-files-cors-result {
+	margin: 4px 0 0;
+	max-width: 640px;
+	font-weight: 600;
+}
+
+.coywolf-files-cors-result:empty {
+	display: none;
+}
+
+.coywolf-files-cors-result.is-ok {
+	color: #1a7f37;
+}
+
+.coywolf-files-cors-result.is-warn {
+	color: #8a6d00;
+}
+
+.coywolf-files-cors-result.is-fail {
+	color: #b32d2e;
+}
+
+.coywolf-files-cors-result pre {
+	margin: 8px 0 0;
+	padding: 1em;
+	font-weight: 400;
+	white-space: pre-wrap;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	overflow: auto;
+}

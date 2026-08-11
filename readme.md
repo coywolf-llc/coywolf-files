@@ -1,6 +1,6 @@
 # Coywolf Files
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 **Requires at least:** WordPress 6.3
 **Requires PHP:** 7.4
 **License:** GPL-2.0-or-later
@@ -72,6 +72,10 @@ The provider is the one you choose; consult its terms and privacy policy:
 - **Backblaze B2** — [Terms](https://www.backblaze.com/company/terms.html) · [Privacy Policy](https://www.backblaze.com/company/privacy.html)
 
 ## Changelog
+
+### 1.0.1
+- Add a **Check CORS** button to Settings that runs a real test upload from the browser and reports exactly what to fix (including a missing `ExposeHeaders: ETag`).
+- Expand Documentation with per-provider, step-by-step instructions for getting credentials and configuring the bucket CORS rule (Backblaze B2, Cloudflare R2, Amazon S3).
 
 ### 1.0.0
 - Initial release: the Files block, direct-to-storage uploads for Backblaze B2 / Cloudflare R2 / Amazon S3, the download card with light and dark themes, and the All Files library.

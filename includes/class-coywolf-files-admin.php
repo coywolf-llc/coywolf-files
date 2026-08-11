@@ -144,6 +144,29 @@ class Coywolf_Files_Admin {
 		}
 		wp_enqueue_style( 'coywolf-files-admin', COYWOLF_FILES_URL . 'css/admin.css', array(), Coywolf_Files::VERSION );
 
+		// Settings screen: the Check CORS button (a real browser test upload).
+		if ( isset( $this->hooks['settings'] ) && $hook === $this->hooks['settings'] ) {
+			wp_enqueue_script( 'coywolf-files-settings', COYWOLF_FILES_URL . 'js/settings.js', array( 'wp-api-fetch', 'wp-i18n' ), Coywolf_Files::VERSION, true );
+			wp_set_script_translations( 'coywolf-files-settings', 'coywolf-files' );
+			wp_add_inline_script(
+				'coywolf-files-settings',
+				'window.coywolfFilesSettings = ' . wp_json_encode(
+					array(
+						'corsJson' => Coywolf_Files_Docs::cors_json_s3(),
+						'i18n'     => array(
+							'checking'  => __( 'Checking…', 'coywolf-files' ),
+							'ok'        => __( '✓ CORS is configured correctly — uploads will work.', 'coywolf-files' ),
+							'noEtag'    => __( 'Uploads work, but the ETag header is not exposed, so large files will fail. Add "ETag" to the CORS ExposeHeaders and check again.', 'coywolf-files' ),
+							'rejected'  => __( 'CORS is allowing this site, but the test upload was rejected — check your keys and bucket permissions.', 'coywolf-files' ),
+							'fail'      => __( 'CORS is not configured for this site. Add this rule to your bucket, then check again:', 'coywolf-files' ),
+							'serverErr' => __( 'Could not start the check. Make sure a bucket is connected above.', 'coywolf-files' ),
+						),
+					)
+				) . ';',
+				'before'
+			);
+		}
+
 		$on_list   = isset( $this->hooks['list'] ) && $hook === $this->hooks['list'];
 		$on_upload = isset( $this->hooks['upload'] ) && $hook === $this->hooks['upload'];
 		if ( ! $on_list && ! $on_upload ) {
