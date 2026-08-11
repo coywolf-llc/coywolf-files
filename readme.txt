@@ -3,7 +3,7 @@ Contributors: jonhenshaw
 Tags: file, download, amazon s3, backblaze b2, cloudflare r2
 Requires at least: 6.3
 Tested up to: 7.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -83,6 +83,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 5. A published download card with the file-type badge, meta line, and Download / Copy-link buttons, in light and dark themes.
 
 == Changelog ==
+
+= 1.0.3 =
+* Settings: hide the access key, secret key, bucket, storage location, advanced, and connection fields until a provider is selected, so the form reveals itself step by step.
 
 = 1.0.2 =
 * Settings: show only the storage-location field relevant to the selected provider — Region for Backblaze B2 and Amazon S3, Cloudflare account ID for Cloudflare R2.

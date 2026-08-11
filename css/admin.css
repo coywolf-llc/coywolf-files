@@ -81,6 +81,11 @@
 	overflow: auto;
 }
 
+/* Hide the provider-dependent rows until a provider is chosen. */
+.coywolf-files-no-provider .coywolf-files-provider-row {
+	display: none;
+}
+
 /* Check CORS result. */
 .coywolf-files-cors-result {
 	margin: 4px 0 0;

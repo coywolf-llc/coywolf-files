@@ -1,6 +1,6 @@
 # Coywolf Files
 
-**Version:** 1.0.2
+**Version:** 1.0.3
 **Requires at least:** WordPress 6.3
 **Requires PHP:** 7.4
 **License:** GPL-2.0-or-later
@@ -72,6 +72,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 - **Backblaze B2** — [Terms](https://www.backblaze.com/company/terms.html) · [Privacy Policy](https://www.backblaze.com/company/privacy.html)
 
 ## Changelog
+
+### 1.0.3
+- Settings: hide the access key, secret key, bucket, storage location, advanced, and connection fields until a provider is selected, so the form reveals itself step by step.
 
 ### 1.0.2
 - Settings: show only the storage-location field relevant to the selected provider — Region for Backblaze B2 and Amazon S3, Cloudflare account ID for Cloudflare R2.

@@ -308,12 +308,12 @@ class Coywolf_Files_Settings {
 
 		add_settings_section( 'coywolf_files_storage', __( 'Storage connection', 'coywolf-files' ), array( $this, 'render_storage_intro' ), self::PAGE );
 		add_settings_field( 'provider', __( 'Provider', 'coywolf-files' ), array( $this, 'render_provider_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-provider' ) );
-		add_settings_field( 'access_key', __( 'Access key ID', 'coywolf-files' ), array( $this, 'render_access_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-access-key' ) );
-		add_settings_field( 'secret_key', __( 'Secret access key', 'coywolf-files' ), array( $this, 'render_secret_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-secret-key' ) );
-		add_settings_field( 'bucket', __( 'Bucket', 'coywolf-files' ), array( $this, 'render_bucket_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-bucket' ) );
-		add_settings_field( 'location', __( 'Storage location', 'coywolf-files' ), array( $this, 'render_location_field' ), self::PAGE, 'coywolf_files_storage' );
-		add_settings_field( 'advanced', __( 'Advanced', 'coywolf-files' ), array( $this, 'render_advanced_field' ), self::PAGE, 'coywolf_files_storage' );
-		add_settings_field( 'connection', __( 'Connection', 'coywolf-files' ), array( $this, 'render_connection_field' ), self::PAGE, 'coywolf_files_storage' );
+		add_settings_field( 'access_key', __( 'Access key ID', 'coywolf-files' ), array( $this, 'render_access_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-access-key', 'class' => 'coywolf-files-provider-row' ) );
+		add_settings_field( 'secret_key', __( 'Secret access key', 'coywolf-files' ), array( $this, 'render_secret_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-secret-key', 'class' => 'coywolf-files-provider-row' ) );
+		add_settings_field( 'bucket', __( 'Bucket', 'coywolf-files' ), array( $this, 'render_bucket_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-bucket', 'class' => 'coywolf-files-provider-row' ) );
+		add_settings_field( 'location', __( 'Storage location', 'coywolf-files' ), array( $this, 'render_location_field' ), self::PAGE, 'coywolf_files_storage', array( 'class' => 'coywolf-files-provider-row' ) );
+		add_settings_field( 'advanced', __( 'Advanced', 'coywolf-files' ), array( $this, 'render_advanced_field' ), self::PAGE, 'coywolf_files_storage', array( 'class' => 'coywolf-files-provider-row' ) );
+		add_settings_field( 'connection', __( 'Connection', 'coywolf-files' ), array( $this, 'render_connection_field' ), self::PAGE, 'coywolf_files_storage', array( 'class' => 'coywolf-files-provider-row' ) );
 
 		add_settings_section( 'coywolf_files_appearance', __( 'Appearance', 'coywolf-files' ), array( $this, 'render_appearance_intro' ), self::PAGE );
 		add_settings_field( 'scheme', __( 'Color scheme', 'coywolf-files' ), array( $this, 'render_scheme_field' ), self::PAGE, 'coywolf_files_appearance', array( 'label_for' => 'coywolf-files-scheme' ) );
@@ -753,7 +753,10 @@ class Coywolf_Files_Settings {
 			}
 		}
 
-		echo '<form action="options.php" method="post">';
+		// Until a provider is chosen, hide the provider-dependent rows (CSS in
+		// admin.css targets this class; settings.js toggles it live).
+		$form_class = '' === $this->provider() ? ' class="coywolf-files-no-provider"' : '';
+		echo '<form action="options.php" method="post"' . $form_class . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute.
 		settings_fields( self::GROUP );
 		do_settings_sections( self::PAGE );
 		submit_button();

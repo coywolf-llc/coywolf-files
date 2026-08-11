@@ -24,23 +24,26 @@
 		if ( ! select ) {
 			return;
 		}
+		var form = select.closest ? select.closest( 'form' ) : null;
 		var region = document.querySelector( '.coywolf-files-loc-region' );
 		var account = document.querySelector( '.coywolf-files-loc-account' );
-		var row = ( region && region.closest ) ? region.closest( 'tr' ) : null;
 
 		function apply() {
 			var v = select.value;
-			var showRegion = ( 'b2' === v || 's3' === v );
-			var showAccount = ( 'r2' === v );
+			// Reveal all provider-dependent rows only once a provider is chosen.
+			if ( form ) {
+				if ( '' === v ) {
+					form.classList.add( 'coywolf-files-no-provider' );
+				} else {
+					form.classList.remove( 'coywolf-files-no-provider' );
+				}
+			}
+			// Within the (now visible) location row, show only the relevant field.
 			if ( region ) {
-				region.style.display = showRegion ? '' : 'none';
+				region.style.display = ( 'b2' === v || 's3' === v ) ? '' : 'none';
 			}
 			if ( account ) {
-				account.style.display = showAccount ? '' : 'none';
-			}
-			// Hide the whole row until a provider is chosen.
-			if ( row ) {
-				row.style.display = ( showRegion || showAccount ) ? '' : 'none';
+				account.style.display = ( 'r2' === v ) ? '' : 'none';
 			}
 		}
 
