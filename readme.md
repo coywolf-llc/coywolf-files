@@ -1,6 +1,6 @@
 # Coywolf Files
 
-**Version:** 1.0.1
+**Version:** 1.0.2
 **Requires at least:** WordPress 6.3
 **Requires PHP:** 7.4
 **License:** GPL-2.0-or-later
@@ -72,6 +72,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 - **Backblaze B2** — [Terms](https://www.backblaze.com/company/terms.html) · [Privacy Policy](https://www.backblaze.com/company/privacy.html)
 
 ## Changelog
+
+### 1.0.2
+- Settings: show only the storage-location field relevant to the selected provider — Region for Backblaze B2 and Amazon S3, Cloudflare account ID for Cloudflare R2.
 
 ### 1.0.1
 - Add a **Check CORS** button to Settings that runs a real test upload from the browser and reports exactly what to fix (including a missing `ExposeHeaders: ETag`).

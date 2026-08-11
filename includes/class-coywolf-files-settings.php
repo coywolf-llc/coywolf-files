@@ -311,7 +311,7 @@ class Coywolf_Files_Settings {
 		add_settings_field( 'access_key', __( 'Access key ID', 'coywolf-files' ), array( $this, 'render_access_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-access-key' ) );
 		add_settings_field( 'secret_key', __( 'Secret access key', 'coywolf-files' ), array( $this, 'render_secret_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-secret-key' ) );
 		add_settings_field( 'bucket', __( 'Bucket', 'coywolf-files' ), array( $this, 'render_bucket_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-bucket' ) );
-		add_settings_field( 'location', __( 'Account ID / Region', 'coywolf-files' ), array( $this, 'render_location_field' ), self::PAGE, 'coywolf_files_storage' );
+		add_settings_field( 'location', __( 'Storage location', 'coywolf-files' ), array( $this, 'render_location_field' ), self::PAGE, 'coywolf_files_storage' );
 		add_settings_field( 'advanced', __( 'Advanced', 'coywolf-files' ), array( $this, 'render_advanced_field' ), self::PAGE, 'coywolf_files_storage' );
 		add_settings_field( 'connection', __( 'Connection', 'coywolf-files' ), array( $this, 'render_connection_field' ), self::PAGE, 'coywolf_files_storage' );
 
@@ -507,11 +507,17 @@ class Coywolf_Files_Settings {
 	}
 
 	/**
-	 * Account ID (R2) / Region (B2, S3) fields.
+	 * Account ID (R2) / Region (B2, S3) fields. Only the field relevant to the
+	 * chosen provider is shown — hidden inline here (based on the saved provider,
+	 * to avoid a flash) and toggled by settings.js when the provider changes.
 	 */
 	public function render_location_field() {
-		$conn = $this->connection();
-		echo '<div class="coywolf-files-loc-region">';
+		$conn     = $this->connection();
+		$provider = $this->provider();
+		$show_region  = in_array( $provider, array( 'b2', 's3' ), true ) ? '' : ' style="display:none;"';
+		$show_account = ( 'r2' === $provider ) ? '' : ' style="display:none;"';
+
+		echo '<div class="coywolf-files-loc-region"' . $show_region . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute.
 		printf(
 			'<label>%1$s <input type="text" class="regular-text" name="%2$s[region]" value="%3$s" placeholder="%4$s" autocomplete="off" spellcheck="false" /></label>',
 			esc_html__( 'Region', 'coywolf-files' ),
@@ -521,7 +527,7 @@ class Coywolf_Files_Settings {
 		);
 		echo '<p class="description">' . esc_html__( 'For Amazon S3 (e.g. us-east-1) and Backblaze B2 (e.g. us-west-004).', 'coywolf-files' ) . '</p>';
 		echo '</div>';
-		echo '<div class="coywolf-files-loc-account" style="margin-top:0.75em;">';
+		echo '<div class="coywolf-files-loc-account"' . $show_account . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute.
 		printf(
 			'<label>%1$s <input type="text" class="regular-text" name="%2$s[account_id]" value="%3$s" autocomplete="off" spellcheck="false" /></label>',
 			esc_html__( 'Cloudflare account ID', 'coywolf-files' ),

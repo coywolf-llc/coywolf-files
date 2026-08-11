@@ -17,7 +17,40 @@
 		return window.wp.apiFetch( args );
 	}
 
+	// Show only the location field relevant to the chosen provider: Region for
+	// Backblaze B2 / Amazon S3, Cloudflare account ID for R2.
+	function initProviderToggle() {
+		var select = document.getElementById( 'coywolf-files-provider' );
+		if ( ! select ) {
+			return;
+		}
+		var region = document.querySelector( '.coywolf-files-loc-region' );
+		var account = document.querySelector( '.coywolf-files-loc-account' );
+		var row = ( region && region.closest ) ? region.closest( 'tr' ) : null;
+
+		function apply() {
+			var v = select.value;
+			var showRegion = ( 'b2' === v || 's3' === v );
+			var showAccount = ( 'r2' === v );
+			if ( region ) {
+				region.style.display = showRegion ? '' : 'none';
+			}
+			if ( account ) {
+				account.style.display = showAccount ? '' : 'none';
+			}
+			// Hide the whole row until a provider is chosen.
+			if ( row ) {
+				row.style.display = ( showRegion || showAccount ) ? '' : 'none';
+			}
+		}
+
+		select.addEventListener( 'change', apply );
+		apply();
+	}
+
 	function init() {
+		initProviderToggle();
+
 		var btn = document.getElementById( 'coywolf-files-cors-check' );
 		var out = document.getElementById( 'coywolf-files-cors-result' );
 		if ( ! btn || ! out ) {
