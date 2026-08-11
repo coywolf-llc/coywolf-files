@@ -51,8 +51,69 @@
 		apply();
 	}
 
+	// Live-update the sample card as the appearance controls change.
+	function initAppearancePreview() {
+		var preview = document.getElementById( 'coywolf-files-preview' );
+		if ( ! preview ) {
+			return;
+		}
+		var scheme = document.getElementById( 'coywolf-files-scheme' );
+		var accent = document.getElementById( 'coywolf-files-accent' );
+		var toggles = document.querySelectorAll( '[data-cwf-preview]' );
+		var i;
+
+		function applyScheme() {
+			if ( ! scheme ) {
+				return;
+			}
+			preview.classList.remove( 'coywolf-files-scheme-auto', 'coywolf-files-scheme-light', 'coywolf-files-scheme-dark' );
+			var v = scheme.value;
+			if ( 'auto' === v || 'light' === v || 'dark' === v ) {
+				preview.classList.add( 'coywolf-files-scheme-' + v );
+			}
+		}
+
+		function applyAccent() {
+			if ( ! accent ) {
+				return;
+			}
+			var v = accent.value.trim();
+			if ( /^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test( v ) ) {
+				preview.style.setProperty( '--cwf-accent', v );
+			} else {
+				preview.style.removeProperty( '--cwf-accent' );
+			}
+		}
+
+		function applyToggle( cb ) {
+			var part = preview.querySelector( '[data-cwf-part="' + cb.getAttribute( 'data-cwf-preview' ) + '"]' );
+			if ( part ) {
+				part.style.display = cb.checked ? '' : 'none';
+			}
+		}
+
+		if ( scheme ) {
+			scheme.addEventListener( 'change', applyScheme );
+		}
+		if ( accent ) {
+			accent.addEventListener( 'input', applyAccent );
+			accent.addEventListener( 'change', applyAccent );
+		}
+		for ( i = 0; i < toggles.length; i++ ) {
+			( function ( cb ) {
+				cb.addEventListener( 'change', function () {
+					applyToggle( cb );
+				} );
+				applyToggle( cb );
+			} )( toggles[ i ] );
+		}
+		applyScheme();
+		applyAccent();
+	}
+
 	function init() {
 		initProviderToggle();
+		initAppearancePreview();
 
 		var btn = document.getElementById( 'coywolf-files-cors-check' );
 		var out = document.getElementById( 'coywolf-files-cors-result' );

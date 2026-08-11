@@ -308,14 +308,45 @@ class Coywolf_Files_Settings {
 
 		add_settings_section( 'coywolf_files_storage', __( 'Storage connection', 'coywolf-files' ), array( $this, 'render_storage_intro' ), self::PAGE );
 		add_settings_field( 'provider', __( 'Provider', 'coywolf-files' ), array( $this, 'render_provider_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-provider' ) );
-		add_settings_field( 'access_key', __( 'Access key ID', 'coywolf-files' ), array( $this, 'render_access_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-access-key', 'class' => 'coywolf-files-provider-row' ) );
-		add_settings_field( 'secret_key', __( 'Secret access key', 'coywolf-files' ), array( $this, 'render_secret_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-secret-key', 'class' => 'coywolf-files-provider-row' ) );
-		add_settings_field( 'bucket', __( 'Bucket', 'coywolf-files' ), array( $this, 'render_bucket_field' ), self::PAGE, 'coywolf_files_storage', array( 'label_for' => 'coywolf-files-bucket', 'class' => 'coywolf-files-provider-row' ) );
+		add_settings_field(
+			'access_key',
+			__( 'Access key ID', 'coywolf-files' ),
+			array( $this, 'render_access_field' ),
+			self::PAGE,
+			'coywolf_files_storage',
+			array(
+				'label_for' => 'coywolf-files-access-key',
+				'class'     => 'coywolf-files-provider-row',
+			)
+		);
+		add_settings_field(
+			'secret_key',
+			__( 'Secret access key', 'coywolf-files' ),
+			array( $this, 'render_secret_field' ),
+			self::PAGE,
+			'coywolf_files_storage',
+			array(
+				'label_for' => 'coywolf-files-secret-key',
+				'class'     => 'coywolf-files-provider-row',
+			)
+		);
+		add_settings_field(
+			'bucket',
+			__( 'Bucket', 'coywolf-files' ),
+			array( $this, 'render_bucket_field' ),
+			self::PAGE,
+			'coywolf_files_storage',
+			array(
+				'label_for' => 'coywolf-files-bucket',
+				'class'     => 'coywolf-files-provider-row',
+			)
+		);
 		add_settings_field( 'location', __( 'Storage location', 'coywolf-files' ), array( $this, 'render_location_field' ), self::PAGE, 'coywolf_files_storage', array( 'class' => 'coywolf-files-provider-row' ) );
 		add_settings_field( 'advanced', __( 'Advanced', 'coywolf-files' ), array( $this, 'render_advanced_field' ), self::PAGE, 'coywolf_files_storage', array( 'class' => 'coywolf-files-provider-row' ) );
 		add_settings_field( 'connection', __( 'Connection', 'coywolf-files' ), array( $this, 'render_connection_field' ), self::PAGE, 'coywolf_files_storage', array( 'class' => 'coywolf-files-provider-row' ) );
 
 		add_settings_section( 'coywolf_files_appearance', __( 'Appearance', 'coywolf-files' ), array( $this, 'render_appearance_intro' ), self::PAGE );
+		add_settings_field( 'preview', __( 'Preview', 'coywolf-files' ), array( $this, 'render_appearance_preview_field' ), self::PAGE, 'coywolf_files_appearance' );
 		add_settings_field( 'scheme', __( 'Color scheme', 'coywolf-files' ), array( $this, 'render_scheme_field' ), self::PAGE, 'coywolf_files_appearance', array( 'label_for' => 'coywolf-files-scheme' ) );
 		add_settings_field( 'accent', __( 'Accent color', 'coywolf-files' ), array( $this, 'render_accent_field' ), self::PAGE, 'coywolf_files_appearance', array( 'label_for' => 'coywolf-files-accent' ) );
 		add_settings_field( 'display', __( 'Card display', 'coywolf-files' ), array( $this, 'render_display_field' ), self::PAGE, 'coywolf_files_appearance' );
@@ -512,8 +543,8 @@ class Coywolf_Files_Settings {
 	 * to avoid a flash) and toggled by settings.js when the provider changes.
 	 */
 	public function render_location_field() {
-		$conn     = $this->connection();
-		$provider = $this->provider();
+		$conn         = $this->connection();
+		$provider     = $this->provider();
 		$show_region  = in_array( $provider, array( 'b2', 's3' ), true ) ? '' : ' style="display:none;"';
 		$show_account = ( 'r2' === $provider ) ? '' : ' style="display:none;"';
 
@@ -616,6 +647,51 @@ class Coywolf_Files_Settings {
 	}
 
 	/**
+	 * A live sample of the download card, styled with the front-end CSS and
+	 * updated by settings.js as the appearance controls change. Marked
+	 * aria-hidden — it is a visual illustration, not real content.
+	 */
+	public function render_appearance_preview_field() {
+		$cfg    = $this->all();
+		$scheme = (string) $cfg['color_scheme'];
+		$class  = 'coywolf-files coywolf-files-preview';
+		if ( in_array( $scheme, array( 'auto', 'light', 'dark' ), true ) ) {
+			$class .= ' coywolf-files-scheme-' . $scheme;
+		}
+		$accent_style = '' !== (string) $cfg['accent_color'] ? ' style="--cwf-accent:' . esc_attr( (string) $cfg['accent_color'] ) . ';"' : '';
+
+		$name = 'Quarterly-Report.pdf';
+		$desc = __( 'The Q3 financial summary.', 'coywolf-files' );
+		$meta = 'PDF · ' . Coywolf_Files_Block::format_size( 2517000 ) . ' · ' . sprintf(
+			/* translators: %s: formatted date. */
+			__( 'Uploaded %s', 'coywolf-files' ),
+			wp_date( 'M j, Y' )
+		);
+
+		// Initial visibility mirrors the saved toggles (so it's correct without JS).
+		$hide = static function ( $key ) use ( $cfg ) {
+			return empty( $cfg[ $key ] ) ? ' style="display:none;"' : '';
+		};
+
+		$html  = '<div class="' . esc_attr( $class ) . '" id="coywolf-files-preview"' . $accent_style . ' aria-hidden="true">';
+		$html .= '<div class="coywolf-files-card">';
+		$html .= '<div class="coywolf-files-icon" data-cwf-part="icon"' . $hide( 'show_icon' ) . '>' . Coywolf_Files_Block::file_icon_svg( 'pdf' ) . '</div>';
+		$html .= '<div class="coywolf-files-body">';
+		$html .= '<div class="coywolf-files-name">' . esc_html( $name ) . '</div>';
+		$html .= '<div class="coywolf-files-desc" data-cwf-part="description"' . $hide( 'show_description' ) . '>' . esc_html( $desc ) . '</div>';
+		$html .= '<div class="coywolf-files-meta" data-cwf-part="meta"' . $hide( 'show_meta' ) . '>' . esc_html( $meta ) . '</div>';
+		$html .= '</div>';
+		$html .= '<div class="coywolf-files-actions">';
+		$html .= '<span class="coywolf-files-btn coywolf-files-download" data-cwf-part="download"' . $hide( 'show_download' ) . '>' . Coywolf_Files_Block::download_svg() . '</span>';
+		$html .= '<span class="coywolf-files-btn coywolf-files-copy" data-cwf-part="copy"' . $hide( 'show_copy_link' ) . '>' . Coywolf_Files_Block::link_svg() . '</span>';
+		$html .= '</div></div></div>';
+
+		// Built entirely from escaped values + the plugin's own static SVG helpers.
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<p class="description">' . esc_html__( 'A live sample — it updates as you change the settings below. The date and file are just examples.', 'coywolf-files' ) . '</p>';
+	}
+
+	/**
 	 * Color scheme select.
 	 */
 	public function render_scheme_field() {
@@ -650,11 +726,29 @@ class Coywolf_Files_Settings {
 	 * Card display toggles.
 	 */
 	public function render_display_field() {
-		$this->checkbox( 'show_icon', __( 'Show the file-type icon', 'coywolf-files' ) );
-		$this->checkbox( 'show_description', __( 'Show the description', 'coywolf-files' ) );
-		$this->checkbox( 'show_meta', __( 'Show the meta line (type · size · uploaded date)', 'coywolf-files' ) );
-		$this->checkbox( 'show_download', __( 'Show the download button', 'coywolf-files' ) );
-		$this->checkbox( 'show_copy_link', __( 'Show the copy-link button', 'coywolf-files' ) );
+		$this->preview_checkbox( 'show_icon', __( 'Show the file-type icon', 'coywolf-files' ), 'icon' );
+		$this->preview_checkbox( 'show_description', __( 'Show the description', 'coywolf-files' ), 'description' );
+		$this->preview_checkbox( 'show_meta', __( 'Show the meta line (type · size · uploaded date)', 'coywolf-files' ), 'meta' );
+		$this->preview_checkbox( 'show_download', __( 'Show the download button', 'coywolf-files' ), 'download' );
+		$this->preview_checkbox( 'show_copy_link', __( 'Show the copy-link button', 'coywolf-files' ), 'copy' );
+	}
+
+	/**
+	 * A display-toggle checkbox that also drives the live preview part.
+	 *
+	 * @param string $key   Setting key.
+	 * @param string $label Label.
+	 * @param string $part  Preview part name (data-cwf-preview).
+	 */
+	private function preview_checkbox( $key, $label, $part ) {
+		printf(
+			'<p><label><input type="checkbox" data-cwf-preview="%4$s" name="%1$s[%2$s]" value="1"%3$s /> %5$s</label></p>',
+			esc_attr( self::OPTION ),
+			esc_attr( $key ),
+			checked( (bool) $this->get( $key ), true, false ),
+			esc_attr( $part ),
+			esc_html( $label )
+		);
 	}
 
 	/**
