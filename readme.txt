@@ -3,7 +3,7 @@ Contributors: jonhenshaw
 Tags: file, download, amazon s3, cloudflare r2
 Requires at least: 6.3
 Tested up to: 7.0
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 5. A published download card with the file-type badge, meta line, and Download / Copy-link buttons, in light and dark themes.
 
 == Changelog ==
+
+= 1.0.7 =
+* Code quality: inline the option and settings-group names at their call sites (WordPress.org prefix-visibility best practice). No functional or data change.
 
 = 1.0.6 =
 * Rename the block to "Coywolf File" to avoid confusion with WordPress's built-in File block.

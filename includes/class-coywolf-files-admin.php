@@ -200,7 +200,7 @@ class Coywolf_Files_Admin {
 						'preparing'     => __( 'Preparing upload…', 'coywolf-files' ),
 						'uploading'     => __( 'Uploading…', 'coywolf-files' ),
 						'finishing'     => __( 'Finishing…', 'coywolf-files' ),
-						'uploaded'      => __( 'Uploaded! It’s now in your library — add it to a post or page with the Files block.', 'coywolf-files' ),
+						'uploaded'      => __( 'Uploaded! It’s now in your library — add it to a post or page with the Coywolf File block.', 'coywolf-files' ),
 						'uploadFailed'  => __( 'Upload failed.', 'coywolf-files' ),
 						'retrying'      => __( 'Connection hiccup — retrying…', 'coywolf-files' ),
 					),
@@ -354,7 +354,7 @@ class Coywolf_Files_Admin {
 		}
 		?>
 		<div class="coywolf-files-uploader" data-list-url="<?php echo esc_url( admin_url( 'admin.php?page=' . self::PAGE ) ); ?>">
-			<p class="description"><?php esc_html_e( 'Upload any-sized file straight to your storage bucket. Large files are sent in resumable chunks directly from your browser. Uploaded files appear in your library and can be added to a post or page with the Files block.', 'coywolf-files' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Upload any-sized file straight to your storage bucket. Large files are sent in resumable chunks directly from your browser. Uploaded files appear in your library and can be added to a post or page with the Coywolf File block.', 'coywolf-files' ); ?></p>
 			<div class="coywolf-files-drop" id="coywolf-files-drop">
 				<label for="coywolf-files-file"><?php esc_html_e( 'Choose a file or drag it here.', 'coywolf-files' ); ?></label>
 				<input type="file" id="coywolf-files-file" />

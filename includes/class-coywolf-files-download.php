@@ -69,7 +69,7 @@ class Coywolf_Files_Download {
 	 * @return string
 	 */
 	public static function base_slug() {
-		$settings = get_option( Coywolf_Files_Settings::OPTION, array() );
+		$settings = get_option( 'coywolf_files_settings', array() );
 		$base     = is_array( $settings ) && ! empty( $settings['download_base'] ) ? sanitize_title( (string) $settings['download_base'] ) : '';
 		return '' !== $base ? $base : 'coywolf-file';
 	}

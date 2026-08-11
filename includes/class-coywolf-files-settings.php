@@ -20,14 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Coywolf_Files_Settings {
 
-	const GROUP         = 'coywolf_files_settings_group';
-	const PAGE          = 'coywolf-files-settings';
-	const OPTION        = 'coywolf_files_settings';
-	const CONN_OPTION   = 'coywolf_files_connection';
-	const ACCESS_OPTION = 'coywolf_files_access_key';
-	const SECRET_OPTION = 'coywolf_files_secret_key';
-	const ACCESS_CONST  = 'COYWOLF_FILES_ACCESS_KEY';
-	const SECRET_CONST  = 'COYWOLF_FILES_SECRET_KEY';
+	const PAGE         = 'coywolf-files-settings';
+	const ACCESS_CONST = 'COYWOLF_FILES_ACCESS_KEY';
+	const SECRET_CONST = 'COYWOLF_FILES_SECRET_KEY';
 
 	/**
 	 * Per-request cache of the merged appearance settings.
@@ -45,10 +40,10 @@ class Coywolf_Files_Settings {
 		add_action( 'admin_post_coywolf_files_remove_secret', array( $this, 'handle_remove_secret' ) );
 		add_action( 'admin_notices', array( $this, 'maybe_plaintext_notice' ) );
 
-		add_action( 'update_option_' . self::OPTION, array( $this, 'flush_cache' ) );
-		add_action( 'add_option_' . self::OPTION, array( $this, 'flush_cache' ) );
+		add_action( 'update_option_coywolf_files_settings', array( $this, 'flush_cache' ) );
+		add_action( 'add_option_coywolf_files_settings', array( $this, 'flush_cache' ) );
 
-		foreach ( array( self::CONN_OPTION, self::ACCESS_OPTION, self::SECRET_OPTION ) as $option ) {
+		foreach ( array( 'coywolf_files_connection', 'coywolf_files_access_key', 'coywolf_files_secret_key' ) as $option ) {
 			add_action( 'update_option_' . $option, array( $this, 'on_connection_changed' ) );
 			add_action( 'add_option_' . $option, array( $this, 'on_connection_changed' ) );
 		}
@@ -82,7 +77,7 @@ class Coywolf_Files_Settings {
 		if ( self::PAGE !== $page ) {
 			return;
 		}
-		if ( '' === (string) get_option( self::SECRET_OPTION, '' ) || Coywolf_Files_Crypto::available() ) {
+		if ( '' === (string) get_option( 'coywolf_files_secret_key', '' ) || Coywolf_Files_Crypto::available() ) {
 			return;
 		}
 		echo '<div class="notice notice-warning"><p>' . wp_kses_post(
@@ -137,11 +132,11 @@ class Coywolf_Files_Settings {
 	 * Seed default options on activation.
 	 */
 	public static function seed_defaults() {
-		if ( false === get_option( self::OPTION, false ) ) {
-			add_option( self::OPTION, self::defaults() );
+		if ( false === get_option( 'coywolf_files_settings', false ) ) {
+			add_option( 'coywolf_files_settings', self::defaults() );
 		}
-		if ( false === get_option( self::CONN_OPTION, false ) ) {
-			add_option( self::CONN_OPTION, self::connection_defaults() );
+		if ( false === get_option( 'coywolf_files_connection', false ) ) {
+			add_option( 'coywolf_files_connection', self::connection_defaults() );
 		}
 		if ( false === get_option( 'coywolf_files_version', false ) ) {
 			add_option( 'coywolf_files_version', Coywolf_Files::VERSION );
@@ -157,7 +152,7 @@ class Coywolf_Files_Settings {
 		if ( null !== $this->cache ) {
 			return $this->cache;
 		}
-		$stored = get_option( self::OPTION, array() );
+		$stored = get_option( 'coywolf_files_settings', array() );
 		if ( ! is_array( $stored ) ) {
 			$stored = array();
 		}
@@ -182,7 +177,7 @@ class Coywolf_Files_Settings {
 	 * @return array
 	 */
 	public function connection() {
-		$stored = get_option( self::CONN_OPTION, array() );
+		$stored = get_option( 'coywolf_files_connection', array() );
 		if ( ! is_array( $stored ) ) {
 			$stored = array();
 		}
@@ -205,7 +200,7 @@ class Coywolf_Files_Settings {
 	 * @return string
 	 */
 	public function access_key() {
-		$saved = (string) get_option( self::ACCESS_OPTION, '' );
+		$saved = (string) get_option( 'coywolf_files_access_key', '' );
 		if ( '' !== $saved ) {
 			return $saved;
 		}
@@ -222,7 +217,7 @@ class Coywolf_Files_Settings {
 	 * @return string
 	 */
 	public function secret_key() {
-		$saved = (string) get_option( self::SECRET_OPTION, '' );
+		$saved = (string) get_option( 'coywolf_files_secret_key', '' );
 		if ( '' !== $saved ) {
 			return Coywolf_Files_Crypto::decrypt( $saved );
 		}
@@ -236,12 +231,12 @@ class Coywolf_Files_Settings {
 	/**
 	 * Source description for a credential ({ source, saved, constant, env }).
 	 *
-	 * @param string $option Option name.
+	 * @param string $saved_value The saved option value (empty if none).
 	 * @param string $const_name  Constant / env name.
 	 * @return array
 	 */
-	private function credential_status( $option, $const_name ) {
-		$saved    = '' !== (string) get_option( $option, '' );
+	private function credential_status( $saved_value, $const_name ) {
+		$saved    = '' !== (string) $saved_value;
 		$constant = defined( $const_name ) && '' !== (string) constant( $const_name );
 		$env      = false !== getenv( $const_name ) && '' !== (string) getenv( $const_name );
 		$source   = $saved ? 'saved' : ( $constant ? 'constant' : ( $env ? 'env' : 'none' ) );
@@ -266,8 +261,8 @@ class Coywolf_Files_Settings {
 	 */
 	public function register() {
 		register_setting(
-			self::GROUP,
-			self::CONN_OPTION,
+			'coywolf_files_settings_group',
+			'coywolf_files_connection',
 			array(
 				'type'              => 'array',
 				'sanitize_callback' => array( $this, 'sanitize_connection' ),
@@ -276,8 +271,8 @@ class Coywolf_Files_Settings {
 			)
 		);
 		register_setting(
-			self::GROUP,
-			self::ACCESS_OPTION,
+			'coywolf_files_settings_group',
+			'coywolf_files_access_key',
 			array(
 				'type'              => 'string',
 				'sanitize_callback' => array( $this, 'sanitize_access_key' ),
@@ -286,8 +281,8 @@ class Coywolf_Files_Settings {
 			)
 		);
 		register_setting(
-			self::GROUP,
-			self::SECRET_OPTION,
+			'coywolf_files_settings_group',
+			'coywolf_files_secret_key',
 			array(
 				'type'              => 'string',
 				'sanitize_callback' => array( $this, 'sanitize_secret_key' ),
@@ -296,8 +291,8 @@ class Coywolf_Files_Settings {
 			)
 		);
 		register_setting(
-			self::GROUP,
-			self::OPTION,
+			'coywolf_files_settings_group',
+			'coywolf_files_settings',
 			array(
 				'type'              => 'array',
 				'sanitize_callback' => array( $this, 'sanitize_appearance' ),
@@ -356,7 +351,7 @@ class Coywolf_Files_Settings {
 
 		// Match the save capability to the menu capability: the settings form
 		// posts to options.php, which otherwise enforces manage_options.
-		add_filter( 'option_page_capability_' . self::GROUP, array( $this, 'settings_capability' ) );
+		add_filter( 'option_page_capability_coywolf_files_settings_group', array( $this, 'settings_capability' ) );
 	}
 
 	/**
@@ -415,7 +410,7 @@ class Coywolf_Files_Settings {
 	public function sanitize_secret_key( $value ) {
 		$value = is_string( $value ) ? trim( $value ) : '';
 		if ( '' === $value ) {
-			return (string) get_option( self::SECRET_OPTION, '' );
+			return (string) get_option( 'coywolf_files_secret_key', '' );
 		}
 		return Coywolf_Files_Crypto::encrypt( sanitize_text_field( $value ) );
 	}
@@ -487,7 +482,7 @@ class Coywolf_Files_Settings {
 			'r2' => __( 'Cloudflare R2', 'coywolf-files' ),
 			's3' => __( 'Amazon S3', 'coywolf-files' ),
 		);
-		echo '<select name="' . esc_attr( self::CONN_OPTION ) . '[provider]" id="coywolf-files-provider">';
+		echo '<select name="' . esc_attr( 'coywolf_files_connection' ) . '[provider]" id="coywolf-files-provider">';
 		foreach ( $providers as $value => $label ) {
 			printf( '<option value="%s"%s>%s</option>', esc_attr( $value ), selected( $conn['provider'], $value, false ), esc_html( $label ) );
 		}
@@ -501,20 +496,20 @@ class Coywolf_Files_Settings {
 	public function render_access_field() {
 		printf(
 			'<input type="text" id="coywolf-files-access-key" class="regular-text" name="%1$s" value="%2$s" autocomplete="off" spellcheck="false" />',
-			esc_attr( self::ACCESS_OPTION ),
-			esc_attr( (string) get_option( self::ACCESS_OPTION, '' ) )
+			esc_attr( 'coywolf_files_access_key' ),
+			esc_attr( (string) get_option( 'coywolf_files_access_key', '' ) )
 		);
-		$this->render_credential_note( $this->credential_status( self::ACCESS_OPTION, self::ACCESS_CONST ), self::ACCESS_CONST );
+		$this->render_credential_note( $this->credential_status( get_option( 'coywolf_files_access_key', '' ), self::ACCESS_CONST ), self::ACCESS_CONST );
 	}
 
 	/**
 	 * Secret key field (write-only).
 	 */
 	public function render_secret_field() {
-		$status = $this->credential_status( self::SECRET_OPTION, self::SECRET_CONST );
+		$status = $this->credential_status( get_option( 'coywolf_files_secret_key', '' ), self::SECRET_CONST );
 		printf(
 			'<input type="password" id="coywolf-files-secret-key" class="regular-text" name="%1$s" value="" autocomplete="new-password" spellcheck="false" placeholder="%2$s" />',
-			esc_attr( self::SECRET_OPTION ),
+			esc_attr( 'coywolf_files_secret_key' ),
 			esc_attr( $status['saved'] ? __( '•••••••• saved — leave blank to keep', 'coywolf-files' ) : __( 'Paste your secret access key', 'coywolf-files' ) )
 		);
 		if ( $status['saved'] ) {
@@ -531,7 +526,7 @@ class Coywolf_Files_Settings {
 		$conn = $this->connection();
 		printf(
 			'<input type="text" id="coywolf-files-bucket" class="regular-text" name="%1$s[bucket]" value="%2$s" autocomplete="off" spellcheck="false" />',
-			esc_attr( self::CONN_OPTION ),
+			esc_attr( 'coywolf_files_connection' ),
 			esc_attr( (string) $conn['bucket'] )
 		);
 	}
@@ -551,7 +546,7 @@ class Coywolf_Files_Settings {
 		printf(
 			'<label>%1$s <input type="text" class="regular-text" name="%2$s[region]" value="%3$s" placeholder="%4$s" autocomplete="off" spellcheck="false" /></label>',
 			esc_html__( 'Region', 'coywolf-files' ),
-			esc_attr( self::CONN_OPTION ),
+			esc_attr( 'coywolf_files_connection' ),
 			esc_attr( (string) $conn['region'] ),
 			esc_attr__( 'e.g. us-east-1', 'coywolf-files' )
 		);
@@ -561,7 +556,7 @@ class Coywolf_Files_Settings {
 		printf(
 			'<label>%1$s <input type="text" class="regular-text" name="%2$s[account_id]" value="%3$s" autocomplete="off" spellcheck="false" /></label>',
 			esc_html__( 'Cloudflare account ID', 'coywolf-files' ),
-			esc_attr( self::CONN_OPTION ),
+			esc_attr( 'coywolf_files_connection' ),
 			esc_attr( (string) $conn['account_id'] )
 		);
 		echo '<p class="description">' . esc_html__( 'For Cloudflare R2 only — the 32-character account ID from your Cloudflare dashboard.', 'coywolf-files' ) . '</p>';
@@ -579,7 +574,7 @@ class Coywolf_Files_Settings {
 		echo '<p><label>' . esc_html__( 'Public base URL (optional)', 'coywolf-files' ) . '<br />';
 		printf(
 			'<input type="url" class="regular-text" name="%1$s[public_base]" value="%2$s" placeholder="https://files.example.com" />',
-			esc_attr( self::CONN_OPTION ),
+			esc_attr( 'coywolf_files_connection' ),
 			esc_attr( (string) $conn['public_base'] )
 		);
 		echo '</label></p>';
@@ -588,7 +583,7 @@ class Coywolf_Files_Settings {
 		echo '<p><label>' . esc_html__( 'Custom endpoint (optional)', 'coywolf-files' ) . '<br />';
 		printf(
 			'<input type="url" class="regular-text" name="%1$s[endpoint]" value="%2$s" placeholder="https://s3.example.com" />',
-			esc_attr( self::CONN_OPTION ),
+			esc_attr( 'coywolf_files_connection' ),
 			esc_attr( (string) $conn['endpoint'] )
 		);
 		echo '</label></p>';
@@ -596,7 +591,7 @@ class Coywolf_Files_Settings {
 
 		printf(
 			'<p><label><input type="checkbox" name="%1$s[path_style]" value="1"%2$s /> %3$s</label></p>',
-			esc_attr( self::CONN_OPTION ),
+			esc_attr( 'coywolf_files_connection' ),
 			checked( ! empty( $conn['path_style'] ), true, false ),
 			esc_html__( 'Use path-style addressing (needed for some S3-compatible hosts and buckets whose names contain dots)', 'coywolf-files' )
 		);
@@ -701,7 +696,7 @@ class Coywolf_Files_Settings {
 			'dark'  => __( 'Always dark', 'coywolf-files' ),
 			'off'   => __( 'Off — inherit your theme', 'coywolf-files' ),
 		);
-		echo '<select id="coywolf-files-scheme" name="' . esc_attr( self::OPTION ) . '[color_scheme]">';
+		echo '<select id="coywolf-files-scheme" name="' . esc_attr( 'coywolf_files_settings' ) . '[color_scheme]">';
 		foreach ( $schemes as $key => $label ) {
 			printf( '<option value="%s"%s>%s</option>', esc_attr( $key ), selected( $value, $key, false ), esc_html( $label ) );
 		}
@@ -715,7 +710,7 @@ class Coywolf_Files_Settings {
 	public function render_accent_field() {
 		printf(
 			'<input type="text" id="coywolf-files-accent" class="regular-text" name="%1$s[accent_color]" value="%2$s" placeholder="#007392" pattern="#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})" />',
-			esc_attr( self::OPTION ),
+			esc_attr( 'coywolf_files_settings' ),
 			esc_attr( (string) $this->get( 'accent_color' ) )
 		);
 		echo '<p class="description">' . esc_html__( 'Hex color for the download button and the selected-card outline. Pick one with at least 3:1 contrast against your card background. Leave blank to inherit your theme’s link color.', 'coywolf-files' ) . '</p>';
@@ -742,7 +737,7 @@ class Coywolf_Files_Settings {
 	private function preview_checkbox( $key, $label, $part ) {
 		printf(
 			'<p><label><input type="checkbox" data-cwf-preview="%4$s" name="%1$s[%2$s]" value="1"%3$s /> %5$s</label></p>',
-			esc_attr( self::OPTION ),
+			esc_attr( 'coywolf_files_settings' ),
 			esc_attr( $key ),
 			checked( (bool) $this->get( $key ), true, false ),
 			esc_attr( $part ),
@@ -757,7 +752,7 @@ class Coywolf_Files_Settings {
 		printf(
 			'<code>%1$s</code><input type="text" id="coywolf-files-download-base" class="regular-text code" name="%2$s[download_base]" value="%3$s" style="width:12em;" />',
 			esc_html( trailingslashit( home_url() ) ),
-			esc_attr( self::OPTION ),
+			esc_attr( 'coywolf_files_settings' ),
 			esc_attr( (string) $this->get( 'download_base' ) )
 		);
 		echo '<p class="description">' . esc_html__( 'The URL path that download links use, e.g. example.com/coywolf-file/abc123. Change it if it clashes with a page slug; you may need to re-save Permalinks after changing it.', 'coywolf-files' ) . '</p>';
@@ -772,7 +767,7 @@ class Coywolf_Files_Settings {
 	private function checkbox( $key, $label ) {
 		printf(
 			'<p><label><input type="checkbox" name="%1$s[%2$s]" value="1"%3$s /> %4$s</label></p>',
-			esc_attr( self::OPTION ),
+			esc_attr( 'coywolf_files_settings' ),
 			esc_attr( $key ),
 			checked( (bool) $this->get( $key ), true, false ),
 			esc_html( $label )
@@ -850,7 +845,7 @@ class Coywolf_Files_Settings {
 		// admin.css targets this class; settings.js toggles it live).
 		$form_class = '' === $this->provider() ? ' class="coywolf-files-no-provider"' : '';
 		echo '<form action="options.php" method="post"' . $form_class . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static attribute.
-		settings_fields( self::GROUP );
+		settings_fields( 'coywolf_files_settings_group' );
 		do_settings_sections( self::PAGE );
 		submit_button();
 		echo '</form>';
@@ -883,7 +878,7 @@ class Coywolf_Files_Settings {
 		}
 		check_admin_referer( 'coywolf_files_remove_secret' );
 
-		delete_option( self::SECRET_OPTION );
+		delete_option( 'coywolf_files_secret_key' );
 
 		wp_safe_redirect( add_query_arg( 'coywolf_files_notice', 'secret_removed', $this->page_url() ) );
 		exit;
