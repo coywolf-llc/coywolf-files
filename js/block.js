@@ -379,7 +379,7 @@
 				Placeholder,
 				{
 					icon: 'media-default',
-					label: __( 'Files', 'coywolf-files' ),
+					label: __( 'Coywolf File', 'coywolf-files' ),
 					instructions: __( 'Upload a file to your storage bucket, or pick one you’ve already uploaded.', 'coywolf-files' )
 				},
 				el( 'div', { className: 'coywolf-files-placeholder-actions' }, actions )

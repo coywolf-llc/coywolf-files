@@ -3,7 +3,7 @@
  * Object-storage module for Coywolf Files.
  *
  * Reads the connection settings, derives the per-provider endpoint host and
- * signing region (Backblaze B2, Cloudflare R2, or Amazon S3), and builds an
+ * signing region (Cloudflare R2 or Amazon S3), and builds an
  * S3-compatible client. Higher-level operations sit here: planning a presigned
  * upload, completing a multipart upload, deleting an object, and presigning a
  * download URL.
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Storage operations across B2 / R2 / S3.
+ * Storage operations across R2 / S3.
  */
 class Coywolf_Files_Storage {
 
@@ -43,7 +43,7 @@ class Coywolf_Files_Storage {
 	const R2_ACCOUNT_RE = '/^[0-9a-f]{32}$/i';
 
 	/**
-	 * SSRF guard: a region slug (us-east-1, us-west-004, auto, …).
+	 * SSRF guard: a region slug (us-east-1, auto, …).
 	 */
 	const REGION_RE = '/^[a-z0-9-]{2,40}$/';
 
@@ -114,7 +114,7 @@ class Coywolf_Files_Storage {
 		$conn       = $this->settings->connection();
 		$bucket     = isset( $conn['bucket'] ) ? (string) $conn['bucket'] : '';
 
-		if ( ! in_array( $provider, array( 'b2', 'r2', 's3' ), true ) ) {
+		if ( ! in_array( $provider, array( 'r2', 's3' ), true ) ) {
 			return new WP_Error( 'coywolf_files_no_provider', __( 'Choose a storage provider.', 'coywolf-files' ) );
 		}
 		if ( '' === $access_key || '' === $secret_key || '' === $bucket ) {
@@ -131,11 +131,6 @@ class Coywolf_Files_Storage {
 			}
 			$host   = $account . '.r2.cloudflarestorage.com';
 			$region = 'auto';
-		} elseif ( 'b2' === $provider ) {
-			if ( ! preg_match( self::REGION_RE, $region ) ) {
-				return new WP_Error( 'coywolf_files_bad_region', __( 'Enter a valid Backblaze region (for example, us-west-004).', 'coywolf-files' ) );
-			}
-			$host = 's3.' . $region . '.backblazeb2.com';
 		} else { // s3.
 			if ( ! preg_match( self::REGION_RE, $region ) ) {
 				return new WP_Error( 'coywolf_files_bad_region', __( 'Enter a valid AWS region (for example, us-east-1).', 'coywolf-files' ) );

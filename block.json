@@ -2,10 +2,10 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "coywolf/file",
-	"title": "Files",
+	"title": "Coywolf File",
 	"category": "media",
 	"icon": "media-default",
-	"description": "Upload a file to Backblaze B2, Cloudflare R2, or Amazon S3, or pick one from your library, and show a download card visitors can download or copy a link to.",
+	"description": "Upload a file to Cloudflare R2 or Amazon S3, or pick one from your library, and show a download card visitors can download or copy a link to.",
 	"keywords": [ "file", "download", "attachment", "upload", "document" ],
 	"textdomain": "coywolf-files",
 	"supports": {

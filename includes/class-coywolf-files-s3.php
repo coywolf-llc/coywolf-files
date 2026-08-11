@@ -2,9 +2,9 @@
 /**
  * Minimal S3-compatible client with AWS Signature V4 signing.
  *
- * Backblaze B2, Cloudflare R2, and Amazon S3 all speak the S3 API, so a single
- * client — with a per-provider endpoint host and signing region — covers all
- * three. Requests go through the WordPress HTTP API; there is no bundled SDK.
+ * Cloudflare R2 and Amazon S3 both speak the S3 API, so a single client — with
+ * a per-provider endpoint host and signing region — covers both. Requests go
+ * through the WordPress HTTP API; there is no bundled SDK.
  *
  * Two signing modes:
  *   • header-signed requests for server-side operations (create/complete/abort
@@ -13,7 +13,7 @@
  *     and to download files.
  *
  * Only the headers this client sets are signed; it never emits the flexible
- * checksum headers (x-amz-checksum-*) that Cloudflare R2 and Backblaze B2 reject.
+ * checksum headers (x-amz-checksum-*) that Cloudflare R2 rejects.
  *
  * @package CoywolfFiles
  */
@@ -47,7 +47,7 @@ class Coywolf_Files_S3 {
 	private $secret_key;
 
 	/**
-	 * SigV4 region (S3: real region; R2: "auto"; B2: real region).
+	 * SigV4 region (S3: real region; R2: "auto").
 	 *
 	 * @var string
 	 */
