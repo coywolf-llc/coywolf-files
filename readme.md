@@ -1,6 +1,6 @@
 # Coywolf Files
 
-**Version:** 1.0.4
+**Version:** 1.0.5
 **Requires at least:** WordPress 6.3
 **Requires PHP:** 7.4
 **License:** GPL-2.0-or-later
@@ -72,6 +72,12 @@ The provider is the one you choose; consult its terms and privacy policy:
 - **Backblaze B2** — [Terms](https://www.backblaze.com/company/terms.html) · [Privacy Policy](https://www.backblaze.com/company/privacy.html)
 
 ## Changelog
+
+### 1.0.5
+- Settings: constrain the appearance preview to a card-like width so it no longer spans the full row.
+
+### 1.0.4
+- Settings: add a live appearance preview — a sample download card that updates as you change the color scheme, accent color, and display toggles.
 
 ### 1.0.3
 - Settings: hide the access key, secret key, bucket, storage location, advanced, and connection fields until a provider is selected, so the form reveals itself step by step.
