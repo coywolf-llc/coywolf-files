@@ -1,6 +1,6 @@
 # Coywolf Files
 
-**Version:** 1.0.7
+**Version:** 1.0.8
 **Requires at least:** WordPress 6.3
 **Requires PHP:** 7.4
 **License:** GPL-2.0-or-later
@@ -71,6 +71,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 - **Cloudflare R2** — [Terms](https://www.cloudflare.com/website-terms/) · [Privacy Policy](https://www.cloudflare.com/privacypolicy/)
 
 ## Changelog
+
+### 1.0.8
+- Confirm WordPress 7.1 compatibility (Tested up to: 7.1) (#9).
 
 ### 1.0.7
 - Code quality: inline the option and settings-group names at their call sites (WordPress.org prefix-visibility best practice). No functional or data change.

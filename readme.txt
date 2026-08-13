@@ -3,7 +3,7 @@ Contributors: jonhenshaw
 Tags: file, download, amazon s3, cloudflare r2
 Requires at least: 6.3
 Tested up to: 7.1
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 5. A published download card with the file-type badge, meta line, and Download / Copy-link buttons, in light and dark themes.
 
 == Changelog ==
+
+= 1.0.8 =
+* Confirm WordPress 7.1 compatibility (Tested up to: 7.1) (#9).
 
 = 1.0.7 =
 * Code quality: inline the option and settings-group names at their call sites (WordPress.org prefix-visibility best practice). No functional or data change.
