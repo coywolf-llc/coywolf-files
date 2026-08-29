@@ -89,7 +89,7 @@ The provider is the one you choose; consult its terms and privacy policy:
 
 = 1.0.6 =
 * Rename the block to "Coywolf File" to avoid confusion with WordPress's built-in File block.
-* Remove Backblaze B2 as a storage provider. Cloudflare R2 and Amazon S3 remain supported.
+* Streamline storage support to Cloudflare R2 and Amazon S3.
 
 = 1.0.5 =
 * Settings: constrain the appearance preview to a card-like width so it no longer spans the full row.
