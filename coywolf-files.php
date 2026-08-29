@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Coywolf Files
- * Plugin URI:        https://coywolf.com/notes/coywolf-files/
+ * Plugin URI:        https://coywolf.com/apps/coywolf-files/
  * Description:        Upload any-sized file to Cloudflare R2 or Amazon S3 and embed it with a Coywolf File block — a download card with light and dark themes, plus an All Files library that tracks which posts and pages use each file.
  * Version:           1.0.8
  * Requires at least: 6.3
