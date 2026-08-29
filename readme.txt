@@ -75,11 +75,9 @@ The provider is the one you choose; consult its terms and privacy policy:
 
 == Screenshots ==
 
-1. The All Files library, listing files added to posts and pages with per-file post and page counts and a download count.
-2. Connecting a Cloudflare R2 or Amazon S3 bucket on the Settings screen.
-3. Uploading a file directly to the bucket from the Upload File screen.
-4. The Coywolf File block in the editor, with the file details and display options.
-5. A published download card with the file-type badge, meta line, and Download / Copy-link buttons, in light and dark themes.
+1. A published download card — colored file-type badge, file name, description, and a "type · size · uploaded date" meta line, with Download and Copy-link controls. Light and dark themes follow the visitor's system.
+2. The All Files library: every file currently placed in a post or page, with per-file download, post, and page counts. Deleting a file here removes it from storage and from every post or page that used it.
+3. The Appearance settings, with a live preview card that updates as you change the color scheme, accent color, and display toggles.
 
 == Changelog ==
 
