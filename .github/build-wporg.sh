@@ -87,6 +87,7 @@ strip_marked() {
 
 rm -f "$STAGE/includes/class-github-updater.php"
 strip_marked "$STAGE/$MAIN_BASE"
+strip_marked "$STAGE/uninstall.php"
 strip_marked "$STAGE/readme.txt"
 # Keep readme.md (the in-plugin Documentation page renders it), but strip any
 # marked regions from it just like readme.txt.
@@ -96,6 +97,11 @@ strip_marked "$STAGE/readme.md"
 # non-.org update source, and Plugin Check reports it as a plugin updater). The
 # GitHub build keeps it so .org can't hijack updates for the same slug.
 perl -ni -e 'print unless /^\s*\*\s*Update URI\s*:/i' "$STAGE/$MAIN_BASE"
+
+# Stripping a marked region that sat at end-of-file leaves the blank line that
+# separated it as a trailing blank line. Collapse trailing whitespace so the
+# variant ends in exactly one newline (WordPress/PHPCS end-of-file rule).
+perl -0777 -i -pe 's/\s*\z/\n/' "$STAGE/$MAIN_BASE"
 
 # The stripped main file must still parse.
 php -l "$STAGE/$MAIN_BASE"

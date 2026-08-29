@@ -38,10 +38,11 @@ foreach ( $coywolf_files_tables as $coywolf_files_table ) {
 	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $coywolf_files_table ) );
 }
 
-// Self-updater caches.
+/* wporg-strip:start — self-updater caches (never created in the WordPress.org build) */
 delete_site_transient( 'coywolf_files_gh_release' );
 delete_site_transient( 'coywolf_files_gh_release_neg' );
 delete_site_transient( 'coywolf_files_gh_release_err' );
+/* wporg-strip:end */
 
 // Plugin transients (connection status, pending uploads).
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
