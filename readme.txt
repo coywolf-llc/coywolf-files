@@ -3,7 +3,7 @@ Contributors: jonhenshaw
 Tags: file, download, amazon s3, cloudflare r2
 Requires at least: 6.3
 Tested up to: 7.1
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -80,6 +80,10 @@ The provider is the one you choose; consult its terms and privacy policy:
 3. The Appearance settings, with a live preview card that updates as you change the color scheme, accent color, and display toggles.
 
 == Changelog ==
+
+= 1.0.9 =
+* Point the Plugin URI at the plugin's home page and add plugin screenshots.
+* Packaging: the WordPress.org build now passes Plugin Check with zero errors and warnings and carries no self-updater references. No functional change.
 
 = 1.0.8 =
 * Confirm WordPress 7.1 compatibility (Tested up to: 7.1) (#9).
